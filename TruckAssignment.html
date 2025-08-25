@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMC CleanPulse - Truck Assignment</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+
+    body { background: #f5f9f6; color: #333; line-height: 1.6; }
+
+    /* Navbar */
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px;
+      background: #145a32; color: #fff;
+      border-bottom: 4px solid orange; /* Golden underline */
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-left img { height: 45px; background: #fff; border-radius: 5px; padding: 2px; }
+    .nav-left h1 { font-size: 20px; font-weight: bold; font-family: 'Georgia', serif; }
+    .nav-right { display: flex; align-items: center; gap: 15px; }
+    .search-bar {
+      padding: 5px 10px; border-radius: 20px; border: none; outline: none; font-size: 14px;
+    }
+    .gov-text { font-style: italic; font-family: 'Georgia', serif; font-size: 15px; }
+
+    /* Container */
+    .container {
+      max-width: 900px; margin: 40px auto; background: #fff; padding: 40px;
+      border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    }
+    .container h2 {
+      text-align: center; margin-bottom: 10px;
+      color: #145a32; font-size: 28px;
+    }
+    .subtitle {
+      text-align: center; margin-bottom: 30px; color: #666; font-size: 16px;
+    }
+
+    /* Form */
+    form { display: grid; gap: 20px; }
+    label { font-weight: 600; margin-bottom: 5px; display: block; }
+    input, select, textarea {
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: 1px solid #ccc; font-size: 15px; transition: border 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #145a32; outline: none;
+    }
+    textarea { resize: none; height: 90px; }
+    .form-row { display: flex; gap: 20px; }
+    .form-row div { flex: 1; }
+
+    /* Button */
+    button {
+      background: #4caf50; color: #fff; padding: 14px; font-size: 16px;
+      border: none; border-radius: 8px; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #2e7d32; }
+
+    /* Success Popup */
+    .popup {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: #fff; padding: 25px 40px; border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      text-align: center; display: none; z-index: 1000;
+      border-top: 5px solid #4caf50;
+    }
+    .popup h3 { color: #145a32; margin-bottom: 10px; }
+    .popup p { color: #444; margin-bottom: 15px; }
+    .popup button {
+      background: #145a32; padding: 10px 20px; border-radius: 6px; font-size: 14px;
+    }
+    .popup button:hover { background: #0d3d21; }
+    .overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); display: none; z-index: 900;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <img src="logocleanpulse.png" alt="CleanPulse Logo">
+      <h1>Nagpur Municipal Corporation - CleanPulse</h1>
+    </div>
+    <div class="nav-right">
+      <input type="text" class="search-bar" placeholder="Search...">
+      <span class="gov-text">Government of Maharashtra</span>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <div class="container">
+    <h2>🚛 Truck Assignment Portal</h2>
+    <p class="subtitle">Assign trucks, drivers, and routes to ensure efficient waste collection.</p>
+
+    <form onsubmit="showPopup(event)">
+      <div class="form-row">
+        <div>
+          <label for="truckNo">Truck Number</label>
+          <input type="text" id="truckNo" name="truckNo" placeholder="e.g. MH-31-AB-2345" required>
+        </div>
+        <div>
+          <label for="driverName">Driver Name</label>
+          <input type="text" id="driverName" name="driverName" placeholder="Enter driver's full name" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="contact">Driver Contact</label>
+          <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+        </div>
+        <div>
+          <label for="shift">Shift Timing</label>
+          <select id="shift" name="shift" required>
+            <option value="">-- Select Shift --</option>
+            <option>Morning (6 AM - 2 PM)</option>
+            <option>Afternoon (2 PM - 10 PM)</option>
+            <option>Night (10 PM - 6 AM)</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="binLocation">Assigned Bin Location</label>
+        <input type="text" id="binLocation" name="binLocation" placeholder="Enter bin location or ID" required>
+      </div>
+
+      <div>
+        <label for="route">Route Details</label>
+        <textarea id="route" name="route" placeholder="Enter optimized route details"></textarea>
+      </div>
+
+      <button type="submit">✅ Assign Truck</button>
+    </form>
+  </div>
+
+  <!-- Success Popup -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <h3>✅ Truck Assigned Successfully!</h3>
+    <p>The driver has been notified and the truck is scheduled.</p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+
+  <script>
+    function showPopup(event) {
+      event.preventDefault();
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("popup").style.display = "block";
+    }
+    function closePopup() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

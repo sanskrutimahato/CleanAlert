@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMC CleanPulse - Homepage</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body { background: #f5f9f6; color: #333; line-height: 1.6; }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: #145a32; /* Dark green */
+      color: #fff;
+      border-bottom: 3px solid orange; /* Thin orange line */
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-left img {
+      height: 45px;
+      background: #fff;
+      border-radius: 5px;
+      padding: 2px;
+    }
+
+    .nav-left h1 {
+      font-size: 20px;
+      font-weight: bold;
+      font-family: 'Georgia', serif;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-bar {
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      width: 200px;
+    }
+
+    .gov-text {
+      font-style: italic;
+      font-family: 'Georgia', serif;
+      font-size: 15px;
+    }
+
+    .toggle-btn {
+      background: #f39c12;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toggle-btn:hover {
+      background: #e67e22;
+    }
+
+    /* Layout */
+    .container { display: flex; min-height: calc(100vh - 70px); }
+    .sidebar {
+      width: 220px; background: #1b4332; color: #fff; transition: width 0.3s;
+      overflow: hidden; padding-top: 20px;
+    }
+    .sidebar.closed { width: 0; padding: 0; }
+    .sidebar ul { list-style: none; }
+    .sidebar li {
+      padding: 12px 20px; cursor: pointer; transition: background 0.3s;
+    }
+    .sidebar li:hover, .sidebar li.active { background: #1b5e20; }
+    .content {
+      flex: 1; padding: 20px;
+      transition: margin-left 0.3s;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center; padding: 80px 20px;
+      background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+                  url('https://images.unsplash.com/photo-1528323273322-d81458248d40') center/cover no-repeat;
+      color: #fff; border-radius: 10px;
+    }
+    .hero h2 { font-size: 36px; margin-bottom: 15px; }
+    .hero p { font-size: 18px; margin-bottom: 25px; }
+    .hero .btn {
+      background: #4caf50; color: #fff; padding: 12px 25px;
+      border: none; border-radius: 5px; font-size: 16px;
+      cursor: pointer; transition: 0.3s;
+    }
+    .hero .btn:hover { background: #2e7d32; }
+
+    /* About Section */
+    .about { padding: 50px 20px; text-align: center; }
+    .about h2 { font-size: 28px; margin-bottom: 20px; color: #1b5e20; }
+    .about p { max-width: 800px; margin: 0 auto; font-size: 18px; }
+
+    /* Animation for About section */
+    .animate {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease-out;
+    }
+    .animate.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .animate.delay {
+      transition-delay: 0.3s;
+    }
+
+    /* Features */
+    .features {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px; padding: 50px 20px;
+    }
+    .feature-card {
+      background: #fff; padding: 25px; border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-5px); }
+    .feature-card h3 { margin-bottom: 10px; color: #388e3c; }
+
+    /* Footer */
+    .footer {
+      background: #1b5e20; color: #fff; text-align: center; padding: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <img src="logocleanpulse.png" alt="Gov Logo">
+      <h1>Nagpur Municipal Corporation - CleanPulse</h1>
+    </div>
+    <div class="nav-right">
+      <input type="text" class="search-bar" placeholder="Search...">
+      <button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+      <span class="gov-text">Government of Maharashtra</span>
+    </div>
+  </header>
+
+  <!-- Sidebar + Content -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar closed">
+      <ul>
+        <li class="active">🏠 Dashboard</li>
+        <li>📊 Reports</li>
+        <li>📍 Assign Trucks</li>
+        <li>🔔 Alerts</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <!-- Hero -->
+      <section class="hero">
+        <h2>Making Cities Cleaner, Smarter, Greener</h2>
+        <p>CleanPulse empowers citizens and municipalities with real-time waste management solutions.</p>
+        <button class="btn">Get Started</button>
+      </section>
+
+      <!-- About -->
+      <section class="about">
+        <h2 class="animate">About CleanPulse</h2>
+        <p class="animate delay">
+          CleanPulse is a demand-driven waste management system that empowers citizens 
+          to report full or overflowing bins via a simple mobile app. Real-time alerts are 
+          sent directly to municipal authorities, who can verify reports, view bin statuses, 
+          and optimize garbage truck routes based on actual needs — not fixed schedules.
+        </p>
+      </section>
+
+      <!-- Features -->
+      <section class="features">
+        <div class="feature-card">
+          <h3>📱 Citizen Mobile App</h3>
+          <p>Report overflowing bins in seconds with photos and GPS support.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🖥️ Municipal Dashboard</h3>
+          <p>Track reports in real-time and manage cleanups efficiently.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🚛 Smart Routing</h3>
+          <p>Garbage trucks dispatched based on need, saving fuel and cost.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⚡ Real-Time Alerts</h3>
+          <p>Instant notifications ensure faster response and cleaner streets.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 Nagpur Municipal Corporation | Government of Maharashtra | All Rights Reserved
+  </footer>
+
+  <!-- Sidebar Toggle Script -->
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("closed");
+    }
+
+    // Reveal About section animations on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("show");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".animate").forEach(el => observer.observe(el));
+  </script>
+
+  <!-- Watson Chatbot -->
+  <script>
+    window.watsonAssistantChatOptions = {
+      integrationID: "b4b17ecb-576e-43f8-be8d-870e6972fa49",
+      region: "au-syd",
+      serviceInstanceID: "805c0230-e3a2-4e3c-82d2-5f53cab78ebd",
+      onLoad: async (instance) => { await instance.render(); }
+    };
+    setTimeout(function(){
+      const t=document.createElement('script');
+      t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" +
+             (window.watsonAssistantChatOptions.clientVersion || 'latest') +
+             "/WatsonAssistantChatEntry.js";
+      document.head.appendChild(t);
+    });
+  </script>
+
+</body>
+</html>

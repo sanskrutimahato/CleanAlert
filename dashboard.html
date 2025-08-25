@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMC CleanPulse</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+</head>
+<body>
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <img src="logocleanpulse.png" alt="Gov Logo" class="logo">
+      <h1>Nagpur Municipal Corporation - CleanPulse</h1>
+    </div>
+    <div class="nav-right">
+      <input type="text" class="search-bar" placeholder="Search...">
+      <span>Government of Maharashtra</span>
+    </div>
+  </header>
+
+  <!-- Sidebar + Content -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul>
+        <li class="active">🏠 Dashboard</li>
+        <li>📊 Reports</li>
+        <li>📍 Assign Trucks</li>
+        <li>🔔 Alerts</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <div class="card full-width">
+        <h2>Live Cleanliness Map</h2>
+        <div id="map"></div>
+      </div>
+
+      <div class="card">
+        <h2>Today’s Reports</h2>
+        <ul>
+          <li>🗑 25 Garbage reports received</li>
+          <li>🚮 12 Cleanups completed</li>
+          <li>📍 5 Pending locations</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Live Alerts</h2>
+        <ul>
+          <li>⚠ Overflowing bin near Central Park</li>
+          <li>⚠ Garbage reported in Main Street</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 Nagpur Municipal Corporation | Government of Maharashtra | All Rights Reserved
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+  <script>
+    // Initialize Map
+    var map = L.map('map').setView([21.1458, 79.0882], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Default markers
+    L.marker([21.1458, 79.0882]).addTo(map).bindPopup("Nagpur Center").openPopup();
+    L.marker([21.1702, 79.0722]).addTo(map).bindPopup("Garbage Reported - Central Park");
+    L.marker([21.1338, 79.0856]).addTo(map).bindPopup("Cleanup Completed - Main Street");
+
+    // Variable to store the search marker
+    var searchMarker = null;
+
+    // Search Control
+    var geocoder = L.Control.geocoder({
+      defaultMarkGeocode: false
+    })
+    .on('markgeocode', function(e) {
+      var bbox = e.geocode.bbox;
+      var center = e.geocode.center;
+
+      // Remove old search marker if exists
+      if (searchMarker) {
+        map.removeLayer(searchMarker);
+      }
+
+      // Add new red marker
+      searchMarker = L.marker(center, {
+        icon: L.icon({
+          iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32]
+        })
+      }).addTo(map).bindPopup(e.geocode.name).openPopup();
+
+      map.fitBounds(bbox);
+    })
+    .addTo(map);
+  </script>
+
+  <!-- 💬 Watson Chatbot Integration -->
+  <script>
+    window.watsonAssistantChatOptions = {
+      integrationID: "b4b17ecb-576e-43f8-be8d-870e6972fa49", // The ID of this integration.
+      region: "au-syd", // The region your integration is hosted in.
+      serviceInstanceID: "805c0230-e3a2-4e3c-82d2-5f53cab78ebd", // The ID of your service instance.
+      onLoad: async (instance) => { await instance.render(); }
+    };
+    setTimeout(function(){
+      const t=document.createElement('script');
+      t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + 
+             (window.watsonAssistantChatOptions.clientVersion || 'latest') + 
+             "/WatsonAssistantChatEntry.js";
+      document.head.appendChild(t);
+    });
+  </script>
+
+</body>
+</html>
